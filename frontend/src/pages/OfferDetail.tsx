@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Clock, MapPin, Phone, Info, ChevronRight, ArrowLeft, Sparkles, User, Smartphone } from 'lucide-react';
+import { Clock, MapPin, Phone, ChevronRight, ArrowLeft, ArrowUpRight, Sparkles, User, Smartphone } from 'lucide-react';
 import { offerService } from '../services/offerService';
 import { bookingService } from '../services/bookingService';
 import Layout from '../components/Layout';
 import type { OfferSlot, BookingRequest } from '../types';
 import { QRCodeSVG } from 'qrcode.react';
 import CountdownTimer from '../components/CountdownTimer';
-import { getEliteImage } from '../services/imageService';
+import { getEliteImage, getFallbackImage, getCategoryFallbackStyle } from '../services/imageService';
 
 const OfferDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [selectedSlot, setSelectedSlot] = useState<OfferSlot | null>(null);
+  const [heroImgState, setHeroImgState] = useState<'primary' | 'fallback' | 'gradient'>('primary');
   const [customerInfo, setCustomerInfo] = useState({
     name: '',
     phone: '',
@@ -62,7 +63,21 @@ const OfferDetail: React.FC = () => {
   if (isLoadingOffer) return <Layout><div className="animate-pulse h-screen bg-slate-50 rounded-[4rem] mx-4"></div></Layout>;
   if (!offer) return <Layout><div className="text-center py-40 font-black text-4xl">Experience Expired.</div></Layout>;
 
-  const imageUrl = getEliteImage(offer.category, offer.id, 1600);
+  const imageUrl =
+    heroImgState === 'primary'
+      ? getEliteImage(offer.category, offer.id, 1600)
+      : heroImgState === 'fallback'
+      ? getFallbackImage(offer.id, 1600, 900)
+      : null;
+  const fallbackGradient = getCategoryFallbackStyle(offer.category);
+
+  const handleHeroImageError = () => {
+    if (heroImgState === 'primary') {
+      setHeroImgState('fallback');
+    } else {
+      setHeroImgState('gradient');
+    }
+  };
 
   return (
     <Layout>
@@ -79,13 +94,20 @@ const OfferDetail: React.FC = () => {
           {/* Left Column: Visuals & Info */}
           <div className="w-full lg:w-3/5 space-y-16">
             {/* Cinematic Hero Image */}
-            <div className="relative aspect-[16/9] md:aspect-[21/9] rounded-[4rem] overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.2)]">
-                <img 
-                    src={imageUrl} 
+            <div className="relative aspect-[16/9] md:aspect-[21/9] rounded-[4rem] overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.2)] bg-slate-900">
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
                     alt={offer.title}
                     className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+                    onError={handleHeroImageError}
+                  />
+                ) : (
+                  <div className="w-full h-full" style={{ background: fallbackGradient }} />
+                )}
+                {/* Cinematic overlay stack */}
+                <div className="card-image-tint absolute inset-0 pointer-events-none" />
+                <div className="card-image-overlay absolute inset-0 pointer-events-none" />
                 
                 {/* Overlay Text */}
                 <div className="absolute bottom-12 left-12 right-12 flex justify-between items-end">
@@ -101,6 +123,7 @@ const OfferDetail: React.FC = () => {
                     </div>
                 </div>
             </div>
+
 
             {/* Detailed Description */}
             <div className="px-4 space-y-12">
