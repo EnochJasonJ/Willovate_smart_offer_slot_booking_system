@@ -8,7 +8,10 @@ import AdminLogin from './pages/AdminLogin';
 import AdminRegister from './pages/AdminRegister';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminOffers from './pages/AdminOffers';
+import CreateOffer from './pages/CreateOffer';
+import AdminBusiness from './pages/AdminBusiness';
 import AdminBookings from './pages/AdminBookings';
+import { authService } from './services/authService';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,11 +23,18 @@ const queryClient = new QueryClient({
 });
 
 // Simple Auth Guard
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+const ProtectedRoute = ({ children, role }: { children: React.ReactNode, role?: 'Admin' | 'Customer' }) => {
   const token = localStorage.getItem('token');
-  if (!token) {
+  const user = authService.getCurrentUser();
+  
+  if (!token || !user) {
     return <Navigate to="/admin/login" replace />;
   }
+
+  if (role && user.role !== role) {
+    return <Navigate to="/" replace />;
+  }
+
   return <>{children}</>;
 };
 
@@ -40,7 +50,7 @@ function App() {
           <Route 
             path="/my-bookings" 
             element={
-              <ProtectedRoute>
+              <ProtectedRoute role="Customer">
                 <MyBookings />
               </ProtectedRoute>
             } 
@@ -52,7 +62,7 @@ function App() {
           <Route 
             path="/admin/dashboard" 
             element={
-              <ProtectedRoute>
+              <ProtectedRoute role="Admin">
                 <AdminDashboard />
               </ProtectedRoute>
             } 
@@ -60,15 +70,31 @@ function App() {
           <Route 
             path="/admin/offers" 
             element={
-              <ProtectedRoute>
+              <ProtectedRoute role="Admin">
                 <AdminOffers />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/offers/create" 
+            element={
+              <ProtectedRoute role="Admin">
+                <CreateOffer />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/business" 
+            element={
+              <ProtectedRoute role="Admin">
+                <AdminBusiness />
               </ProtectedRoute>
             } 
           />
           <Route 
             path="/admin/bookings" 
             element={
-              <ProtectedRoute>
+              <ProtectedRoute role="Admin">
                 <AdminBookings />
               </ProtectedRoute>
             } 

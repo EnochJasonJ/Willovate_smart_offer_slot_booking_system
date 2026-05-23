@@ -24,16 +24,14 @@ function useReveal() {
   return { ref, visible };
 }
 
-// ── Inline-style reveal helper ──────────────────────────────
+// ── Inline-style reveal helper — NO blur (blur filter is GPU-expensive at scale)
 function revealStyle(visible: boolean, delay = 0): React.CSSProperties {
   return {
     opacity: visible ? 1 : 0,
-    transform: visible ? 'translateY(0)' : 'translateY(44px)',
-    filter: visible ? 'blur(0)' : 'blur(5px)',
-    transition: `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}ms,
-                 transform 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}ms,
-                 filter 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
-    willChange: 'opacity,transform,filter',
+    transform: visible ? 'translateY(0)' : 'translateY(36px)',
+    transition: `opacity 0.75s cubic-bezier(0.16,1,0.3,1) ${delay}ms,
+                 transform 0.75s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
+    willChange: 'opacity,transform',
   };
 }
 
@@ -72,36 +70,33 @@ const OfferListing: React.FC = () => {
       ══════════════════════════════════════════════════════ */}
       <div className="relative mb-28 pt-12 pb-20 overflow-hidden">
 
-        {/* Animated orbs (inline animation) */}
+        {/* Ambient orbs — radial gradients fade to transparent naturally (no filter:blur needed) */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
           <div
             className="orb-a absolute rounded-full"
             style={{
-              width: 560, height: 560,
-              top: '-18%', left: '-12%',
-              background: 'radial-gradient(circle, rgba(99,102,241,0.22) 0%, transparent 70%)',
-              filter: 'blur(48px)',
-              opacity: 0.5,
+              width: 500, height: 500,
+              top: '-15%', left: '-10%',
+              background: 'radial-gradient(circle, rgba(99,102,241,0.18) 0%, rgba(99,102,241,0.06) 50%, transparent 70%)',
+              opacity: 0.7,
             }}
           />
           <div
             className="orb-b absolute rounded-full"
             style={{
-              width: 680, height: 680,
-              top: '-22%', right: '-16%',
-              background: 'radial-gradient(circle, rgba(168,85,247,0.18) 0%, transparent 70%)',
-              filter: 'blur(56px)',
-              opacity: 0.45,
+              width: 600, height: 600,
+              top: '-18%', right: '-14%',
+              background: 'radial-gradient(circle, rgba(168,85,247,0.15) 0%, rgba(168,85,247,0.05) 50%, transparent 70%)',
+              opacity: 0.65,
             }}
           />
           <div
             className="orb-c absolute rounded-full"
             style={{
-              width: 400, height: 400,
-              bottom: '-8%', left: '42%',
-              background: 'radial-gradient(circle, rgba(236,72,153,0.14) 0%, transparent 70%)',
-              filter: 'blur(40px)',
-              opacity: 0.38,
+              width: 360, height: 360,
+              bottom: '-6%', left: '40%',
+              background: 'radial-gradient(circle, rgba(236,72,153,0.12) 0%, rgba(236,72,153,0.04) 50%, transparent 70%)',
+              opacity: 0.55,
             }}
           />
         </div>

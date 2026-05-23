@@ -15,7 +15,7 @@ def seed_data():
     
     print("🔑 Authenticating...")
     # Try to register first, if fails assume exists and login
-    requests.post(f"{BASE_URL}/auth/register", json=admin_payload)
+    requests.post(f"{BASE_URL}/auth/register?role=Admin", json=admin_payload)
     login_resp = requests.post(f"{BASE_URL}/auth/login", json=admin_payload)
     
     if login_resp.status_code != 200:

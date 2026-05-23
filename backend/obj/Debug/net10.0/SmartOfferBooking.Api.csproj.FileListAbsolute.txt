@@ -131,3 +131,4 @@
 /Volumes/Enoch/projects/willovate/backend/obj/Debug/net10.0/SmartOfferBooking.Api.genruntimeconfig.cache
 /Volumes/Enoch/projects/willovate/backend/obj/Debug/net10.0/ref/SmartOfferBooking.Api.dll
 /Volumes/Enoch/projects/willovate/backend/bin/Debug/net10.0/BCrypt-Net-Next.dll
+/Volumes/Enoch/projects/willovate/backend/obj/Debug/net10.0/SmartOfferBooking.Api.sourcelink.json

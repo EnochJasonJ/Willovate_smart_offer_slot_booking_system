@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Tag, LogOut, Menu, X, User, ChevronRight } from 'lucide-react';
+import { Tag, LogOut, Menu, X, User, ChevronRight, LayoutDashboard, Calendar, Store } from 'lucide-react';
 import { authService } from '../services/authService';
 
 interface NavbarProps {
@@ -34,17 +34,33 @@ const Navbar: React.FC<NavbarProps> = ({ isAdmin: propIsAdmin }) => {
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-10">
+        <div className="hidden md:flex items-center space-x-8">
           <Link to="/" className="text-slate-500 hover:text-slate-900 font-bold text-sm tracking-tight transition-all">Browse</Link>
           
           {isLoggedIn ? (
             <div className="flex items-center space-x-8">
               {isAdmin ? (
-                <Link to="/admin/dashboard" className="text-slate-500 hover:text-slate-900 font-bold text-sm tracking-tight flex items-center space-x-2 transition-all">
-                  <span>Dashboard</span>
-                </Link>
+                <>
+                    <Link to="/admin/dashboard" className="text-slate-500 hover:text-slate-900 font-bold text-sm tracking-tight flex items-center space-x-2 transition-all">
+                        <LayoutDashboard size={16} />
+                        <span>Dashboard</span>
+                    </Link>
+                    <Link to="/admin/offers" className="text-slate-500 hover:text-slate-900 font-bold text-sm tracking-tight flex items-center space-x-2 transition-all">
+                        <Tag size={16} />
+                        <span>Offers</span>
+                    </Link>
+                    <Link to="/admin/bookings" className="text-slate-500 hover:text-slate-900 font-bold text-sm tracking-tight flex items-center space-x-2 transition-all">
+                        <Calendar size={16} />
+                        <span>Bookings</span>
+                    </Link>
+                    <Link to="/admin/business" className="text-slate-500 hover:text-slate-900 font-bold text-sm tracking-tight flex items-center space-x-2 transition-all">
+                        <Store size={16} />
+                        <span>Profile</span>
+                    </Link>
+                </>
               ) : (
                 <Link to="/my-bookings" className="text-slate-500 hover:text-slate-900 font-bold text-sm tracking-tight flex items-center space-x-2 transition-all">
+                  <Calendar size={16} />
                   <span>My Bookings</span>
                 </Link>
               )}
@@ -93,7 +109,12 @@ const Navbar: React.FC<NavbarProps> = ({ isAdmin: propIsAdmin }) => {
           {isLoggedIn ? (
             <>
               {isAdmin ? (
-                <Link to="/admin/dashboard" className="block text-slate-900 font-black text-3xl tracking-tighter">Dashboard</Link>
+                <>
+                    <Link to="/admin/dashboard" className="block text-slate-900 font-black text-3xl tracking-tighter">Dashboard</Link>
+                    <Link to="/admin/offers" className="block text-slate-900 font-black text-3xl tracking-tighter">Offers</Link>
+                    <Link to="/admin/bookings" className="block text-slate-900 font-black text-3xl tracking-tighter">Bookings</Link>
+                    <Link to="/admin/business" className="block text-slate-900 font-black text-3xl tracking-tighter">Profile</Link>
+                </>
               ) : (
                 <Link to="/my-bookings" className="block text-slate-900 font-black text-3xl tracking-tighter">My Bookings</Link>
               )}

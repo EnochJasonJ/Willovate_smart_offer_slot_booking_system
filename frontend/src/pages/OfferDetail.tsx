@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Clock, MapPin, Phone, ChevronRight, ArrowLeft, ArrowUpRight, Sparkles, User, Smartphone } from 'lucide-react';
+import { Clock, MapPin, Phone, ChevronRight, ArrowLeft, ArrowUpRight, Sparkles, User, Smartphone, Users, Minus, Plus } from 'lucide-react';
 import { offerService } from '../services/offerService';
 import { bookingService } from '../services/bookingService';
 import Layout from '../components/Layout';
@@ -251,6 +251,32 @@ const OfferDetail: React.FC = () => {
                                             value={customerInfo.phone}
                                             onChange={(e) => setCustomerInfo({...customerInfo, phone: e.target.value})}
                                         />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2 flex items-center">
+                                        <Users size={12} className="mr-2" /> Party Size
+                                    </label>
+                                    <div className="flex items-center space-x-4 bg-slate-50 border border-slate-100 rounded-2xl p-2 w-max">
+                                        <button
+                                            type="button"
+                                            onClick={() => setCustomerInfo(prev => ({...prev, peopleCount: Math.max(1, prev.peopleCount - 1)}))}
+                                            className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-slate-400 hover:text-slate-900 shadow-sm transition-colors disabled:opacity-50"
+                                            disabled={customerInfo.peopleCount <= 1}
+                                        >
+                                            <Minus size={16} />
+                                        </button>
+                                        <span className="w-8 text-center font-black text-xl text-slate-900">
+                                            {customerInfo.peopleCount}
+                                        </span>
+                                        <button
+                                            type="button"
+                                            onClick={() => setCustomerInfo(prev => ({...prev, peopleCount: Math.min(10, prev.peopleCount + 1)}))}
+                                            className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-slate-400 hover:text-slate-900 shadow-sm transition-colors disabled:opacity-50"
+                                            disabled={selectedSlot ? customerInfo.peopleCount >= (selectedSlot.capacity - selectedSlot.bookedCount) : false}
+                                        >
+                                            <Plus size={16} />
+                                        </button>
                                     </div>
                                 </div>
                             </div>

@@ -37,7 +37,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult<AuthResponse>> Register(RegisterRequest request, [FromQuery] UserRole role = UserRole.Customer)
+    public async Task<ActionResult<AuthResponse>> Register(RegisterRequest request)
     {
         if (await _context.Users.AnyAsync(u => u.Email == request.Email))
         {
@@ -50,7 +50,7 @@ public class AuthController : ControllerBase
             Name = request.Name,
             Email = request.Email,
             PasswordHash = _authService.HashPassword(request.Password),
-            Role = role
+            Role = UserRole.Customer
         };
 
         _context.Users.Add(user);

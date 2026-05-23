@@ -21,7 +21,7 @@ def seed_massive_data():
     
     # 1. Authenticate
     admin_payload = {"name": "Admin User", "email": "admin@example.com", "password": "AdminPassword123"}
-    requests.post(f"{BASE_URL}/auth/register", json=admin_payload)
+    requests.post(f"{BASE_URL}/auth/register?role=Admin", json=admin_payload)
     login_resp = requests.post(f"{BASE_URL}/auth/login", json=admin_payload)
     
     if login_resp.status_code != 200:
