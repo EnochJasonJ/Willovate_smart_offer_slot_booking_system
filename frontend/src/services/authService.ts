@@ -46,5 +46,16 @@ export const authService = {
   },
   isAuthenticated: () => {
     return !!localStorage.getItem('token');
+  },
+  getRoleFromToken: () => {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      // ASP.NET Core Role Claim URI
+      return payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || payload.role || null;
+    } catch (e) {
+      return null;
+    }
   }
 };

@@ -25,13 +25,13 @@ const queryClient = new QueryClient({
 // Simple Auth Guard
 const ProtectedRoute = ({ children, role }: { children: React.ReactNode, role?: 'Admin' | 'Customer' }) => {
   const token = localStorage.getItem('token');
-  const user = authService.getCurrentUser();
+  const userRole = authService.getRoleFromToken();
   
-  if (!token || !user) {
+  if (!token || !userRole) {
     return <Navigate to="/admin/login" replace />;
   }
 
-  if (role && user.role !== role) {
+  if (role && userRole !== role) {
     return <Navigate to="/" replace />;
   }
 

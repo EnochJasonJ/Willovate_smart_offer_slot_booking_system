@@ -11,8 +11,9 @@ const Navbar: React.FC<NavbarProps> = ({ isAdmin: propIsAdmin }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = React.useState(false);
   const user = authService.getCurrentUser();
-  const isAdmin = propIsAdmin || user?.role === 'Admin';
-  const isLoggedIn = !!user;
+  const userRole = authService.getRoleFromToken();
+  const isAdmin = propIsAdmin || userRole === 'Admin';
+  const isLoggedIn = !!user && !!userRole;
 
   const handleLogout = () => {
     authService.logout();

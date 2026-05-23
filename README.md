@@ -108,6 +108,34 @@ erDiagram
     }
 ```
 
+### **3. RBAC Security Sequence**
+Ensures that access control is enforced at both the UI layer (via JWT decoding) and the API layer (via Role-based claims).
+
+```mermaid
+sequenceDiagram
+    participant U as User (Attacker/Customer)
+    participant F as React App (Guard)
+    participant B as .NET API (Security)
+    participant DB as PostgreSQL
+
+    U->>F: Navigate to /admin/offers/create
+    F->>F: Decode JWT Token Payload
+    alt Role != 'Admin'
+        F-->>U: Redirect to / (Unauthorized)
+    else Role == 'Admin'
+        F->>U: Render Create Offer Page
+        U->>F: Submit Offer Data
+        F->>B: POST /api/offers (with JWT)
+        B->>B: Validate JWT & Role Claim
+        alt Authorized (Admin)
+            B->>DB: Save Offer
+            B-->>F: 201 Created
+        else Unauthorized (Customer)
+            B-->>F: 403 Forbidden
+        end
+    end
+```
+
 ---
 
 ## 🔄 Critical Workflow Orchestration
@@ -142,7 +170,32 @@ sequenceDiagram
     end
 ```
 
-### **2. Deterministic Image Hashing Logic**
+### **2. New Offer & Slot Orchestration**
+Transactional integrity for merchant content creation, ensuring slots are never orphaned.
+
+```mermaid
+sequenceDiagram
+    participant A as Admin Merchant
+    participant F as React Frontend
+    participant B as .NET API
+    participant C as Output Cache
+    participant DB as PostgreSQL
+
+    A->>F: Input Offer & Slot Data
+    F->>B: POST /api/offers (JWT Token)
+    Note over B: Role Check: Admin Only
+    B->>DB: Begin Transaction
+    B->>DB: Save Offer Entity
+    loop For each slot
+        B->>DB: Save OfferSlot Entity
+    end
+    B->>DB: Commit Transaction
+    B->>C: Evict Tag: "offers"
+    B-->>F: 201 Created
+    F->>A: Redirect to /admin/offers
+```
+
+### **3. Deterministic Image Hashing Logic**
 To ensure an "Awwwards" aesthetic without heavy backend processing or duplicate visuals, we use a deterministic client-side engine.
 
 ```mermaid
@@ -161,7 +214,7 @@ graph LR
 ### **Authentication & RBAC**
 | Endpoint | Method | Role | Logic Detail |
 | :--- | :--- | :--- | :--- |
-| `/api/auth/register` | `POST` | Public | Defaults to `Customer`. Admin can be set via query param. |
+| `/api/auth/register` | `POST` | Public | **Strictly `Customer`**. Role escalation via query param is disabled. |
 | `/api/auth/login` | `POST` | Public | Returns `RS256` signed JWT. |
 
 ### **High-Performance Offer Engine**
