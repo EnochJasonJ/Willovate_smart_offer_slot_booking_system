@@ -1,0 +1,78 @@
+// Premium Unsplash IDs curated for high-end look
+const ID_POOL: Record<string, string[]> = {
+  food: [
+    'photo-1514362545857-3bc16c4c7d1b', 'photo-1504674900247-0877df9cc836',
+    'photo-1476514525535-07fb3b4ae5f1', 'photo-1555939594-58d7cb561ad1',
+    'photo-1540189549336-e6e99c3679fe', 'photo-1567622239-b8ad8c11c81f',
+    'photo-1565299624-28258bb44097', 'photo-1484723091779-ee060243c915',
+    'photo-1529088148495-4d2845880741', 'photo-1493770348161-32073994efb8',
+    'photo-1467003909585-2f8a72700288', 'photo-1519708227418-c8fd9a32b7a2',
+    'photo-1546069901-ba9599a7e63c', 'photo-1504754524776-8f4f37790ca0',
+    'photo-1498837167922-ddd27525d352', 'photo-1512621776951-a57141f2eefd',
+    'photo-1532980400857-e8d9d275d858', 'photo-1543353071-10c8ba85a904',
+    'photo-1505935428862-770b6f24f629', 'photo-1506084868730-34ad5333f05a'
+  ],
+  wellness: [
+    'photo-1544367567-0f2fcb009e0b', 'photo-1540555700478-4be289fbecef',
+    'photo-1512290923902-8a9f81dc236c', 'photo-1519415943484-9fa1873496d4',
+    'photo-1545208393-596009601ee7', 'photo-1535312800160-2232a87f4620',
+    'photo-1544161515-6190bd3dd144', 'photo-1527330263441-f77bb62bc3d5',
+    'photo-1591343379-b9195d5272a2', 'photo-1506126613408-c77c1d11b51c',
+    'photo-1515377905703-c4788e51af15', 'photo-1507120410856-1f35574c3b45',
+    'photo-1519823551278-64ac92734fb1', 'photo-1529692236671-f1f6cf9683ba',
+    'photo-1536622294701-3fd99435b67c', 'photo-1511671782779-c97d3d27a1d4',
+    'photo-1537133377277-22125f99233f', 'photo-1508672019048-805c876b67e2',
+    'photo-1512290903422-d122bb4bc0a1', 'photo-1445053023192-8d45cb66099d'
+  ],
+  gym: [
+    'photo-1534438327276-14e5300c3a48', 'photo-1517836357463-d25dfeac3438',
+    'photo-1571019613454-1cb2f99b2d8b', 'photo-1594882645126-14020914d58d',
+    'photo-1593079831268-3381b0db4a77', 'photo-1574673129402-28404ca8884a',
+    'photo-1581009142202-d9624cb6135d', 'photo-1532384748853-2661c5195bf9',
+    'photo-1548691906-cf412093a103', 'photo-1536922246274-716446c39281',
+    'photo-1518611012118-29a8bd38cd4c', 'photo-1571731956622-39ed27ca9dc2',
+    'photo-1550345332-09e3ac987658', 'photo-1540497077202-7c8a3999166f',
+    'photo-1521805103426-b7384393d4bd', 'photo-1583454110551-21f2fa2ec617',
+    'photo-1576678927484-cc907957088c', 'photo-1596357395217-80df13d3c742',
+    'photo-1584735935682-2f2b69d4c2b1', 'photo-1571388208497-71bedc66e932'
+  ],
+  activity: [
+    'photo-1521737604893-d14cc237f11d', 'photo-1505373877841-8d25f7d46678',
+    'photo-1511671782779-c97d3d27a1d4', 'photo-1530549387633-fca14c58e148',
+    'photo-1517457373958-b7bdd058a548', 'photo-1526628953383-85024445f492',
+    'photo-1511884642891-07b51e39a304', 'photo-1533174937812-94a1a38848eb',
+    'photo-1513106580682-527ba20af231', 'photo-1518331647413-5a704e605631',
+    'photo-1470225620780-dba8ba36b745', 'photo-1492684223066-81342ee5ff30',
+    'photo-1472653431158-6364773b2a56', 'photo-1502602898657-3e91760cbb34',
+    'photo-1491933382434-500287f9b54b', 'photo-1514525253344-f814d074e01b',
+    'photo-1516450360452-9312f5e86fc7', 'photo-1524368535928-5b5e00ddc76b',
+    'photo-1508700115892-45ecd05ae2ad', 'photo-1473625247510-8ceb1760943f'
+  ],
+  coaching: [
+    'photo-1522202176988-66273c2fd55f', 'photo-1531482615713-2afd69097998',
+    'photo-1516321318423-f06f85e504b3', 'photo-1552664730-d307ca884978',
+    'photo-1491438590914-bc09fcaaf77a', 'photo-1524178232583-02ee5c14d3a9',
+    'photo-1517248135273-049405f6e4bd', 'photo-1484981131626-7d9bb404130d',
+    'photo-1503673013407-1365b209e2b7', 'photo-1523246542732-4740263f350c',
+    'photo-1558403191-6839b8fd0127', 'photo-1516534775068-ba3e7458af70',
+    'photo-1544377193-33dcf4d68fb5', 'photo-1434030216411-0b793f4b4173',
+    'photo-1513258496099-48168024adb0', 'photo-1554224155-1696413565d3',
+    'photo-1513258496099-48168024adb0', 'photo-1551836022-d5d88e9218df',
+    'photo-1534643960519-11ad79bc19df', 'photo-1517694712202-14dd9538aa97'
+  ]
+};
+
+export const getEliteImage = (category: string, id: string, width = 800) => {
+  const cat = category?.toLowerCase() || 'activity';
+  const images = ID_POOL[cat] || ID_POOL['activity'];
+  
+  // High-performance deterministic hash
+  let hash = 0;
+  const str = id + cat; // Combine id and cat for more variance
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+  }
+  const index = Math.abs(hash) % images.length;
+  
+  return `https://images.unsplash.com/${images[index]}?auto=format&fit=crop&q=85&w=${width}`;
+};

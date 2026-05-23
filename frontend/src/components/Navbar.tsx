@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Tag, LayoutDashboard, Calendar, LogOut, Menu, X, User } from 'lucide-react';
+import { Tag, LogOut, Menu, X, User, ChevronRight } from 'lucide-react';
 import { authService } from '../services/authService';
 
 interface NavbarProps {
@@ -20,102 +20,96 @@ const Navbar: React.FC<NavbarProps> = ({ isAdmin: propIsAdmin }) => {
   };
 
   return (
-    <nav className="bg-white/30 backdrop-blur-2xl sticky top-0 z-50 border-b border-white/20">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between h-24">
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-3 group">
-              <div className="bg-gradient-to-tr from-indigo-600 to-purple-600 p-2.5 rounded-2xl text-white shadow-2xl shadow-indigo-200 group-hover:rotate-12 transition-transform duration-500">
-                <Tag size={26} />
-              </div>
-              <span className="text-3xl font-black tracking-tighter premium-text-gradient">
-                SmartOffer
-              </span>
-            </Link>
-          </div>
+    <div className="container mx-auto px-4 pt-6">
+      <nav className="bg-white/40 backdrop-blur-2xl border border-white/40 rounded-full px-8 h-20 flex items-center justify-between shadow-[0_12px_40px_-12px_rgba(0,0,0,0.05)] sticky top-6 z-50 transition-all duration-500 hover:bg-white/60">
+        <div className="flex items-center">
+          <Link to="/" className="flex items-center space-x-2.5 group">
+            <div className="bg-slate-900 p-2 rounded-full text-white transition-all duration-500 group-hover:bg-indigo-600 group-hover:scale-110">
+              <Tag size={20} />
+            </div>
+            <span className="text-xl font-black tracking-tighter text-slate-900">
+              SmartOffer
+            </span>
+          </Link>
+        </div>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-10">
-            <Link to="/" className="text-slate-600 hover:text-indigo-600 font-black tracking-wide text-sm uppercase transition-all">Browse Offers</Link>
-            
-            {isLoggedIn ? (
-              <>
-                {isAdmin ? (
-                  <Link to="/admin/dashboard" className="text-slate-600 hover:text-indigo-600 font-bold flex items-center space-x-2 transition-all">
-                    <LayoutDashboard size={20} />
-                    <span>Dashboard</span>
-                  </Link>
-                ) : (
-                  <Link to="/my-bookings" className="text-slate-600 hover:text-indigo-600 font-bold flex items-center space-x-2 transition-all">
-                    <Calendar size={20} />
-                    <span>My Bookings</span>
-                  </Link>
-                )}
-                
-                <div className="h-8 w-px bg-slate-200/50"></div>
-                
-                <div className="flex items-center space-x-3 bg-white/50 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/50 shadow-sm">
-                    <div className="bg-indigo-100 p-1.5 rounded-xl text-indigo-600">
-                        <User size={18} />
-                    </div>
-                    <span className="text-sm font-black text-slate-700">{user.name.split(' ')[0]}</span>
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center space-x-10">
+          <Link to="/" className="text-slate-500 hover:text-slate-900 font-bold text-sm tracking-tight transition-all">Browse</Link>
+          
+          {isLoggedIn ? (
+            <div className="flex items-center space-x-8">
+              {isAdmin ? (
+                <Link to="/admin/dashboard" className="text-slate-500 hover:text-slate-900 font-bold text-sm tracking-tight flex items-center space-x-2 transition-all">
+                  <span>Dashboard</span>
+                </Link>
+              ) : (
+                <Link to="/my-bookings" className="text-slate-500 hover:text-slate-900 font-bold text-sm tracking-tight flex items-center space-x-2 transition-all">
+                  <span>My Bookings</span>
+                </Link>
+              )}
+              
+              <div className="flex items-center space-x-4 bg-slate-900/5 px-4 py-2 rounded-full border border-slate-900/5">
+                <div className="bg-slate-900 p-1 rounded-full text-white">
+                  <User size={14} />
                 </div>
-
+                <span className="text-xs font-black text-slate-900 uppercase tracking-wider">{user.name.split(' ')[0]}</span>
                 <button 
                   onClick={handleLogout}
-                  className="bg-rose-50 text-rose-600 p-3 rounded-2xl hover:bg-rose-100 transition-all cursor-pointer border border-rose-100 shadow-sm"
+                  className="text-slate-400 hover:text-rose-600 transition-colors cursor-pointer"
                   title="Logout"
                 >
-                  <LogOut size={22} />
+                  <LogOut size={16} />
                 </button>
-              </>
-            ) : (
-              <>
-                <Link to="/admin/login" className="text-indigo-600 font-black tracking-wide text-sm uppercase transition-all hover:text-purple-600">Partner Login</Link>
-                <Link to="/admin/login" className="btn-vibrant">
-                  GET STARTED
-                </Link>
-              </>
-            )}
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-3 text-indigo-600 bg-indigo-50/50 backdrop-blur-lg rounded-2xl focus:outline-none border border-indigo-100"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-6">
+              <Link to="/admin/login" className="text-slate-500 hover:text-slate-900 font-bold text-sm tracking-tight">Partner Login</Link>
+              <Link to="/admin/login" className="px-6 py-3 bg-slate-900 text-white rounded-full text-xs font-black tracking-[0.1em] hover:bg-indigo-600 transition-all duration-300 shadow-xl shadow-slate-200 flex items-center space-x-2 group/btn">
+                <span>GET STARTED</span>
+                <ChevronRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          )}
         </div>
-      </div>
+
+        {/* Mobile menu button */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-2.5 text-slate-900 bg-slate-50 rounded-full focus:outline-none border border-slate-200/50"
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+      </nav>
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white/90 backdrop-blur-3xl border-b border-indigo-50 py-10 px-6 space-y-8 shadow-2xl animate-in slide-in-from-top duration-500">
-          <Link to="/" className="block text-slate-800 font-black text-2xl tracking-tight">Browse Offers</Link>
+        <div className="md:hidden fixed inset-x-4 top-28 z-40 bg-white/95 backdrop-blur-3xl rounded-[2.5rem] border border-slate-100 p-8 space-y-8 shadow-2xl animate-in fade-in slide-in-from-top-4 duration-500">
+          <Link to="/" className="block text-slate-900 font-black text-3xl tracking-tighter">Browse</Link>
           
           {isLoggedIn ? (
             <>
               {isAdmin ? (
-                <Link to="/admin/dashboard" className="block text-slate-800 font-black text-2xl tracking-tight">Dashboard</Link>
+                <Link to="/admin/dashboard" className="block text-slate-900 font-black text-3xl tracking-tighter">Dashboard</Link>
               ) : (
-                <Link to="/my-bookings" className="block text-slate-800 font-black text-2xl tracking-tight">My Bookings</Link>
+                <Link to="/my-bookings" className="block text-slate-900 font-black text-3xl tracking-tighter">My Bookings</Link>
               )}
               <button 
                 onClick={handleLogout}
-                className="block w-full text-left text-rose-600 font-black text-2xl tracking-tight"
+                className="block w-full text-left text-rose-600 font-black text-3xl tracking-tighter"
               >
                 Logout
               </button>
             </>
           ) : (
-            <Link to="/admin/login" className="block btn-vibrant text-center py-6 text-xl">GET STARTED</Link>
+            <Link to="/admin/login" className="block w-full bg-slate-900 text-white text-center py-6 rounded-[2rem] font-black text-xl tracking-tight">GET STARTED</Link>
           )}
         </div>
       )}
-    </nav>
+    </div>
   );
 };
 
