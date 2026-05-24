@@ -7,6 +7,10 @@
 
 **SmartOffer** is a high-performance, fullstack digital marketplace designed for luxury service providers to manage exclusive, time-bound offers. Built with the **Awwwards Standard** of visual excellence and powered by an enterprise-grade .NET backend.
 
+## 🎥 Video Walkthrough
+Experience the platform in action, featuring the premium UI, secure RBAC flows, and atomic booking orchestration:
+**[Watch the SmartOffer Walkthrough →](https://drive.google.com/file/d/14tqYGm43CFowBbxJGwmQE1CWf15cFbSO/view?usp=sharing)**
+
 ---
 
 ## 🏛️ Comprehensive System Architecture
@@ -210,6 +214,9 @@ graph LR
 ---
 
 ## 🛠️ Comprehensive API Reference
+
+**Interactive API Documentation (Swagger UI)** is available when running in the Development environment at:
+`http://localhost:5152/swagger`
 
 ### **Authentication & RBAC**
 | Endpoint | Method | Role | Logic Detail |
